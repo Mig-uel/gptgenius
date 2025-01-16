@@ -1,3 +1,9 @@
+import { Chat } from '@/components'
+
 export default function Page() {
-  return <div>Page</div>
+  return (
+    <>
+      <Chat />
+    </>
+  )
 }
