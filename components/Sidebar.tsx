@@ -1,4 +1,4 @@
-import { MemberProfile, NavLinks, SidebarHeader } from '@/components'
+import { MemberProfile, NavLinks, SidebarHeader, Spinner } from '@/components'
 import { Suspense } from 'react'
 
 export default function Sidebar() {
@@ -11,7 +11,7 @@ export default function Sidebar() {
       <NavLinks />
 
       {/* Third Row */}
-      <Suspense fallback={<p>loading...</p>}>
+      <Suspense fallback={<Spinner />}>
         <MemberProfile />
       </Suspense>
     </div>
