@@ -1,3 +1,4 @@
+export { default as Chat } from './Chat'
 export { default as Spinner } from './Spinner'
 export { default as MemberProfile } from './MemberProfile'
 export { default as NavLinks } from './NavLinks'
