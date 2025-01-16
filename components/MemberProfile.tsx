@@ -1,3 +1,16 @@
+import { currentUser, UserButton } from '@clerk/nextjs'
+import { redirect } from 'next/navigation'
+
 export default async function MemberProfile() {
-  return <div>Member Profile</div>
+  const user = await currentUser()
+
+  if (!user) return redirect('/')
+
+  return (
+    <div className='px-4 flex items-center gap-2'>
+      <UserButton />
+
+      <p>{user.emailAddresses[0].emailAddress}</p>
+    </div>
+  )
 }
