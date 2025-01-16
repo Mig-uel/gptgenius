@@ -1,3 +1,5 @@
+import { UserProfile } from '@clerk/nextjs'
+
 export default function Page() {
-  return <div>Page</div>
+  return <UserProfile />
 }
