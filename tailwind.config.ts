@@ -1,4 +1,5 @@
 import daisyui from 'daisyui'
+import typography from '@tailwindcss/typography'
 import type { Config } from 'tailwindcss'
 
 export default {
@@ -16,7 +17,7 @@ export default {
       },
     },
   },
-  plugins: [daisyui],
+  plugins: [typography, daisyui],
 
   daisyui: {
     themes: ['winter', 'dracula'],
