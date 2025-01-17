@@ -1,12 +1,12 @@
 'use client'
 
-import { generateChatResponse } from '@/app/utils/action'
+import { generateChatResponse } from '@/utils/action'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 
 export default function Chat() {
   const [text, setText] = useState('')
-  const [messages, setMessage] = useState([])
+  // const [messages, setMessage] = useState([])
 
   // react-query mutation
   const { mutate } = useMutation({
