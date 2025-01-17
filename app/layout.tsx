@@ -7,7 +7,7 @@ import Providers from './_providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'CPTGenius',
+  title: 'GPTGenius',
   description:
     'GPTGenius: Your AI language companion. Powered by OpenAI, it enhances your conversations, content creation, and more!',
 }
