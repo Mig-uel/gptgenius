@@ -6,6 +6,7 @@ import type { Tour } from '@/utils/types'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import TourInfo from './TourInfo'
+import { errorMessage } from '@/utils/helpers'
 
 export default function NewTour() {
   const {
@@ -16,11 +17,11 @@ export default function NewTour() {
     mutationFn: async (destination: Tour) => {
       const newTour = await generateTourResponse(destination)
 
-      if (newTour) {
+      if (typeof newTour === 'object') {
         return newTour
       }
 
-      toast.error('No matching city found...')
+      toast.error(errorMessage(newTour!))
       return null
     },
   })
