@@ -10,7 +10,7 @@ export default function TourInfo({ tour }: { tour: TourData }) {
       <p className='leading-loose mb-6'>{description}</p>
 
       <ul>
-        {stops.map((stop) => (
+        {stops!.map((stop) => (
           <li key={stop} className='mb-4 bg-base-100 p-4 rounded-xl'>
             <p>{stop}</p>
           </li>
