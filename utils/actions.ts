@@ -98,7 +98,7 @@ export const getExistingTour = async ({ city, country }: Tour) => {
 }
 
 /**
- * @description Get existing tours
+ * @description Create New Tour
  * @method POST
  */
 export const createNewTour = async ({
@@ -118,4 +118,42 @@ export const createNewTour = async ({
       title,
     },
   })
+}
+
+/**
+ * @description Get Existing Tours
+ * @method GET
+ */
+export const getAllTours = async (searchTerm: string) => {
+  if (!searchTerm) {
+    const tours = await prisma.tour.findMany({
+      orderBy: {
+        city: 'asc',
+      },
+    })
+
+    return tours
+  }
+
+  const tours = await prisma.tour.findMany({
+    where: {
+      OR: [
+        {
+          city: {
+            contains: searchTerm,
+          },
+        },
+        {
+          country: {
+            contains: searchTerm,
+          },
+        },
+      ],
+    },
+    orderBy: {
+      city: 'asc',
+    },
+  })
+
+  return tours
 }
