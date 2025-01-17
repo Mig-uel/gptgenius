@@ -2,11 +2,11 @@
 
 import { Spinner } from '@/components'
 import { generateTourResponse } from '@/utils/actions'
+import { errorMessage } from '@/utils/helpers'
 import type { Tour } from '@/utils/types'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import TourInfo from './TourInfo'
-import { errorMessage } from '@/utils/helpers'
 
 export default function NewTour() {
   const {
@@ -43,8 +43,6 @@ export default function NewTour() {
   return (
     <>
       <form onSubmit={handleSubmit} className='max-w-2xl'>
-        <h2 className='text-4xl font-bold'>New Tour</h2>
-
         <div className='join w-full mt-6'>
           <input
             type='text'
