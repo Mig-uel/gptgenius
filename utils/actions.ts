@@ -83,7 +83,7 @@ If you can't find info on exact ${city}, or ${city} does not exist, or it's popu
 }
 
 /**
- * @description Get existing tours
+ * @description Get existing tour
  * @method GET
  */
 export const getExistingTour = async ({ city, country }: Tour) => {
