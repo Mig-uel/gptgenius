@@ -23,7 +23,7 @@ export default function Chat() {
   return (
     <div className='min-h-[calc(100vh-6rem)] grid grid-rows-[1fr,auto]'>
       <div>
-        <h2 className='text-5xl'>messages</h2>
+        <h2 className='text-5xl'>Messages</h2>
       </div>
 
       <form onSubmit={handleSubmit} className='max-w-4xl pt-12'>
