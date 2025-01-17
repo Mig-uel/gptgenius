@@ -4,6 +4,7 @@ import { generateChatResponse } from '@/utils/actions'
 import type { Query } from '@/utils/types'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 export default function Chat() {
   const [text, setText] = useState('')
@@ -12,6 +13,21 @@ export default function Chat() {
   // react-query mutation
   const { mutate } = useMutation({
     mutationFn: (query: Query) => generateChatResponse([...messages, query]),
+
+    onSuccess(data) {
+      if (typeof data !== 'object') {
+        toast.error(data)
+        return
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          content: data.content!,
+          role: data.role,
+        },
+      ])
+    },
   })
 
   // handle text submit
@@ -26,7 +42,10 @@ export default function Chat() {
     mutate(query)
 
     setMessages((prev) => [...prev, query])
+    setText('')
   }
+
+  console.log(messages)
 
   return (
     <div className='min-h-[calc(100vh-6rem)] grid grid-rows-[1fr,auto]'>
