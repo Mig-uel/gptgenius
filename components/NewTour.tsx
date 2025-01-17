@@ -1,26 +1,47 @@
 'use client'
 
 import { Spinner } from '@/components'
-import { generateTourResponse } from '@/utils/actions'
+import {
+  createNewTour,
+  generateTourResponse,
+  getExistingTour,
+} from '@/utils/actions'
 import { errorMessage } from '@/utils/helpers'
 import type { Tour } from '@/utils/types'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import TourInfo from './TourInfo'
 
 export default function NewTour() {
+  const queryClient = useQueryClient()
+
   const {
     data: tour,
     isPending,
     mutate,
   } = useMutation({
     mutationFn: async (destination: Tour) => {
+      // find existing tour
+      const existingTour = await getExistingTour(destination)
+      if (existingTour) return existingTour
+
+      // generate new tour
       const newTour = await generateTourResponse(destination)
 
-      if (typeof newTour === 'object') {
+      // if newTour response is an successful
+      if (typeof newTour === 'object' && newTour) {
+        // create new tour
+        await createNewTour(newTour)
+
+        // invalidate tours
+        queryClient.invalidateQueries({
+          queryKey: ['tours'],
+        })
+
         return newTour
       }
 
+      // if newTour response is not successful
       toast.error(errorMessage(newTour!))
       return null
     },
