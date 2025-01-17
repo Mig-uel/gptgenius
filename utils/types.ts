@@ -1,4 +1,4 @@
 export type Query = {
-  role: 'user'
+  role: 'assistant' | 'user'
   content: string
 }
