@@ -25,6 +25,6 @@ export const generateChatResponse = async (chatMessages: Query[]) => {
   } catch (error) {
     if (error instanceof Error) console.log(error.message)
 
-    return null
+    return (error as Error).message
   }
 }
