@@ -11,6 +11,10 @@ export default function ToursPage() {
     queryFn: () => getAllTours(),
   })
 
-  // @ts-expect-error fix prisma types later
-  return <>{isPending ? <Spinner /> : <ToursList data={data} />}</>
+  return (
+    <div className='mt-8'>
+      {/* @ts-expect-error fix prisma types later */}
+      <>{isPending ? <Spinner /> : <ToursList data={data} />}</>
+    </div>
+  )
 }
