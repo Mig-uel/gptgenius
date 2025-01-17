@@ -10,6 +10,8 @@ export default function Page() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      <h2 className='text-4xl font-bold'>New Tour</h2>
+
       <NewTour />
     </HydrationBoundary>
   )
