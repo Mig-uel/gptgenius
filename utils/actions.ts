@@ -1,6 +1,7 @@
 'use server'
 import OpenAI from 'openai'
 import type { Query, Tour, TourData } from './types'
+import prisma from './db'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -30,14 +31,6 @@ export const generateChatResponse = async (chatMessages: Query[]) => {
 
     return (error as Error).message
   }
-}
-
-/**
- * @description Get existing tours
- * @method GET
- */
-export const getExistingTour = async (tour: Tour) => {
-  return null
 }
 
 /**
@@ -91,8 +84,38 @@ If you can't find info on exact ${city}, or ${city} does not exist, or it's popu
 
 /**
  * @description Get existing tours
+ * @method GET
+ */
+export const getExistingTour = async ({ city, country }: Tour) => {
+  return prisma.tour.findUnique({
+    where: {
+      city_country: {
+        city,
+        country,
+      },
+    },
+  })
+}
+
+/**
+ * @description Get existing tours
  * @method POST
  */
-export const createNewTour = async (tour: Tour) => {
-  return null
+export const createNewTour = async ({
+  city,
+  country,
+  description,
+  stops,
+  title,
+}: TourData) => {
+  return prisma.tour.create({
+    data: {
+      city,
+      country,
+      description,
+      // @ts-expect-error fix prisma type later
+      stops,
+      title,
+    },
+  })
 }
