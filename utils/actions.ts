@@ -124,7 +124,7 @@ export const createNewTour = async ({
  * @description Get Existing Tours
  * @method GET
  */
-export const getAllTours = async (searchTerm: string) => {
+export const getAllTours = async (searchTerm?: string) => {
   if (!searchTerm) {
     const tours = await prisma.tour.findMany({
       orderBy: {
