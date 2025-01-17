@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import Spinner from './Spinner'
+import { errorMessage } from '@/utils/helpers'
 
 export default function Chat() {
   const [text, setText] = useState('')
@@ -17,11 +18,7 @@ export default function Chat() {
 
     onSuccess(data) {
       if (typeof data !== 'object') {
-        toast.error(
-          data.length > 100
-            ? `${data.substring(0, data.length - data.length / 2)}...`
-            : data
-        )
+        toast.error(errorMessage(data))
         return
       }
 
