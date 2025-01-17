@@ -11,12 +11,12 @@ export default function Chat() {
   const [messages, setMessages] = useState<Query[]>([])
 
   // react-query mutation
-  const { mutate } = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: (query: Query) => generateChatResponse([...messages, query]),
 
     onSuccess(data) {
       if (typeof data !== 'object') {
-        toast.error(data)
+        toast.error(`${data.substring(0, data.length - data.length / 2)}...`)
         return
       }
 
@@ -66,7 +66,11 @@ export default function Chat() {
             required
           />
 
-          <button className='btn btn-primary join-item uppercase' type='submit'>
+          <button
+            disabled={isPending}
+            className='btn btn-primary join-item uppercase'
+            type='submit'
+          >
             Ask Question
           </button>
         </div>
