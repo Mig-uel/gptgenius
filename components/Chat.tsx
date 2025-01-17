@@ -17,7 +17,11 @@ export default function Chat() {
 
     onSuccess(data) {
       if (typeof data !== 'object') {
-        toast.error(`${data.substring(0, data.length - data.length / 2)}...`)
+        toast.error(
+          data.length > 100
+            ? `${data.substring(0, data.length - data.length / 2)}...`
+            : data
+        )
         return
       }
 
