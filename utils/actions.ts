@@ -1,11 +1,14 @@
 'use server'
 import OpenAI from 'openai'
-import type { Query } from './types'
+import type { Query, Tour } from './types'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+/**
+ * @description Generate Chat Response
+ */
 export const generateChatResponse = async (chatMessages: Query[]) => {
   try {
     const response = await openai.chat.completions.create({
@@ -27,4 +30,27 @@ export const generateChatResponse = async (chatMessages: Query[]) => {
 
     return (error as Error).message
   }
+}
+
+/**
+ * @description Get existing tours
+ * @method GET
+ */
+export const getExistingTour = async (tour: Tour) => {
+  return null
+}
+
+/**
+ * @description Generate Tour Response
+ */
+export const generateTourResponse = async (tour: Tour) => {
+  return null
+}
+
+/**
+ * @description Get existing tours
+ * @method POST
+ */
+export const createNewTour = async (tour: Tour) => {
+  return null
 }
