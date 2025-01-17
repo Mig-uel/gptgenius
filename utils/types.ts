@@ -8,10 +8,4 @@ export type Tour = {
   country: string
 }
 
-export type TourData = {
-  city: string
-  country: string
-  title: string
-  description: string
-  stops: string[]
-}
+export type { Tour as TourData } from '@prisma/client'
