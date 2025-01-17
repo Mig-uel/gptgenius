@@ -1,11 +1,12 @@
 'use server'
 import OpenAI from 'openai'
+import type { Query } from './types'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-export const generateChatResponse = async (chatMessages: string[]) => {
+export const generateChatResponse = async (chatMessages: Query[]) => {
   try {
     const response = await openai.chat.completions.create({
       messages: [
@@ -22,6 +23,8 @@ export const generateChatResponse = async (chatMessages: string[]) => {
 
     return response.choices[0].message
   } catch (error) {
+    if (error instanceof Error) console.log(error.message)
+
     return null
   }
 }
