@@ -1,19 +1,23 @@
 'use client'
 
+import { generateChatResponse } from '@/app/utils/action'
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 
 export default function Chat() {
   const [text, setText] = useState('')
   const [messages, setMessage] = useState([])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value)
-  }
+  // react-query mutation
+  const { mutate } = useMutation({
+    mutationFn: (message: string) => generateChatResponse(message),
+  })
 
+  // handle text submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log(text)
+    mutate(text)
   }
 
   return (
@@ -29,7 +33,7 @@ export default function Chat() {
             placeholder='Message GPTGenius'
             className='input input-bordered join-item w-full'
             value={text}
-            onChange={handleChange}
+            onChange={(e) => setText(e.target.value)}
             required
           />
 
