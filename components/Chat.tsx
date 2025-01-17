@@ -34,6 +34,8 @@ export default function Chat() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    if (!text) return
+
     const query: Query = {
       role: 'user',
       content: text,
