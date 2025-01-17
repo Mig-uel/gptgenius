@@ -7,7 +7,7 @@ export default function ToursList({ data }: { data: TourData[] }) {
   return (
     <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-8'>
       {data.map((tour) => (
-        <TourCard key={tour.id} />
+        <TourCard key={tour.id} tour={tour} />
       ))}
     </div>
   )
