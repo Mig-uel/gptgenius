@@ -5,6 +5,7 @@ import type { Query } from '@/utils/types'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import Spinner from './Spinner'
 
 export default function Chat() {
   const [text, setText] = useState('')
@@ -47,8 +48,6 @@ export default function Chat() {
     setText('')
   }
 
-  console.log(messages)
-
   return (
     <div className='min-h-[calc(100vh-6rem)] grid grid-rows-[1fr,auto]'>
       <div>
@@ -71,7 +70,7 @@ export default function Chat() {
             className='btn btn-primary join-item uppercase'
             type='submit'
           >
-            Ask Question
+            {isPending ? <Spinner /> : 'Ask Question'}
           </button>
         </div>
       </form>
