@@ -5,6 +5,10 @@ import TourInfo from './TourInfo'
 export default function NewTour() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const formData = new FormData(e.currentTarget)
+
+    const destination = Object.fromEntries(formData)
   }
 
   return (
