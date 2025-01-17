@@ -10,11 +10,13 @@ export default function TourInfo({ tour }: { tour: TourData }) {
       <p className='leading-loose mb-6'>{description}</p>
 
       <ul>
-        {stops!.map((stop) => (
-          <li key={stop} className='mb-4 bg-base-100 p-4 rounded-xl'>
-            <p>{stop}</p>
-          </li>
-        ))}
+        {stops &&
+          Array.isArray(stops) &&
+          stops.map((stop) => (
+            <li key={String(stop)} className='mb-4 bg-base-100 p-4 rounded-xl'>
+              <p>{typeof stop === 'string' ? stop : JSON.stringify(stop)}</p>
+            </li>
+          ))}
       </ul>
     </div>
   )
