@@ -2,6 +2,7 @@
 import OpenAI from 'openai'
 import type { Query, Tour, TourData } from './types'
 import prisma from './db'
+import { auth } from '@clerk/nextjs'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -23,6 +24,7 @@ export const generateChatResponse = async (chatMessages: Query[]) => {
 
       model: 'gpt-3.5-turbo',
       temperature: 0,
+      max_tokens: 100,
     })
 
     return response.choices[0].message
@@ -189,4 +191,21 @@ export const generateTourImage = async ({ city, country }: Tour) => {
       return error.message
     }
   }
+}
+
+/** Get User Tokens */
+export const fetchUserTokensById = async (clerkId: string) => {
+  const user = auth()
+
+  if (!user) return null
+
+  const id = user.userId
+
+  const result = await prisma.token.findUnique({
+    where: {
+      clerkId: id,
+    },
+  })
+
+  return result?.tokens
 }
