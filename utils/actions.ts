@@ -3,6 +3,7 @@ import OpenAI from 'openai'
 import type { Query, Tour, TourData } from './types'
 import prisma from './db'
 import { auth } from '@clerk/nextjs'
+import { revalidatePath } from 'next/cache'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -194,10 +195,10 @@ export const generateTourImage = async ({ city, country }: Tour) => {
 }
 
 /** Get User Tokens */
-export const fetchUserTokensById = async (clerkId: string) => {
+export const fetchUserTokensById = async (clerkId?: string) => {
   const user = auth()
 
-  if (!user) return null
+  if (!user || !user.userId) return null
 
   const id = user.userId
 
@@ -208,4 +209,56 @@ export const fetchUserTokensById = async (clerkId: string) => {
   })
 
   return result?.tokens
+}
+
+/** Generate User Tokens */
+export const generateUserTokensForId = async (clerkId?: string) => {
+  const user = auth()
+
+  if (!user || !user.userId) return null
+
+  const id = user.userId
+
+  const result = await prisma.token.create({
+    data: {
+      clerkId: id,
+    },
+  })
+
+  return result?.tokens
+}
+
+/** Fetch or Generate User Tokens */
+export const fetchOrGenerateUserTokensById = async (clerkId?: string) => {
+  const userTokens = await fetchUserTokensById()
+
+  if (userTokens) {
+    return userTokens
+  }
+
+  return await generateUserTokensForId()
+}
+
+/** Subtract User Tokens */
+export const subtractTokens = async (tokens: number, clerkId?: string) => {
+  const user = auth()
+
+  if (!user || !user.userId) return null
+
+  const id = user.userId
+
+  const result = await prisma.token.update({
+    where: {
+      clerkId: id,
+    },
+    data: {
+      tokens: {
+        decrement: tokens,
+      },
+    },
+  })
+
+  revalidatePath('/profile')
+
+  return result.tokens
 }
