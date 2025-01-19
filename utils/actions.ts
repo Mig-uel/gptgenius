@@ -168,3 +168,25 @@ export const getTour = async (id: string) => {
     },
   })
 }
+
+/**
+ * @description Generate tour image
+ */
+
+export const generateTourImage = async ({ city, country }: Tour) => {
+  try {
+    const tourImage = await openai.images.generate({
+      n: 1,
+      prompt: `panoramic view of ${city} ${country}`,
+      size: '512x512',
+    })
+
+    return tourImage?.data[0]?.url
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error)
+
+      return error.message
+    }
+  }
+}
