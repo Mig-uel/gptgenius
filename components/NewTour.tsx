@@ -13,8 +13,10 @@ import type { Tour } from '@/utils/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import TourInfo from './TourInfo'
+import { auth } from '@clerk/nextjs'
 
 export default function NewTour() {
+  const { userId } = auth()
   const queryClient = useQueryClient()
 
   const {
@@ -28,7 +30,7 @@ export default function NewTour() {
       if (existingTour) return existingTour
 
       // check token balance
-      const tokenBalance = await fetchUserTokensById()
+      const tokenBalance = await fetchUserTokensById(userId!)
 
       if (tokenBalance === null || tokenBalance === undefined) {
         toast.error('Something went wrong, please try again...')
@@ -58,7 +60,7 @@ export default function NewTour() {
       })
 
       // subtract tokens used for prompt
-      const updatedTokens = await subtractTokens(newTour.tokens)
+      const updatedTokens = await subtractTokens(newTour.tokens, userId!)
       toast.success(`${updatedTokens} tokens remaining...`)
 
       return newTour.tour
