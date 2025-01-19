@@ -3,8 +3,10 @@
 import { Spinner } from '@/components'
 import {
   createNewTour,
+  fetchUserTokensById,
   generateTourResponse,
   getExistingTour,
+  subtractTokens,
 } from '@/utils/actions'
 import { errorMessage } from '@/utils/helpers'
 import type { Tour } from '@/utils/types'
@@ -25,25 +27,41 @@ export default function NewTour() {
       const existingTour = await getExistingTour(destination)
       if (existingTour) return existingTour
 
+      // check token balance
+      const tokenBalance = await fetchUserTokensById()
+
+      if (tokenBalance === null || tokenBalance === undefined) {
+        toast.error('Something went wrong, please try again...')
+        return
+      }
+
+      if (tokenBalance < 300) {
+        toast.error('Your token balance is too low. Please top-up...')
+        return
+      }
+
       // generate new tour
       const newTour = await generateTourResponse(destination)
 
-      // if newTour response is an successful
-      if (typeof newTour === 'object' && newTour) {
-        // create new tour
-        await createNewTour(newTour)
-
-        // invalidate tours
-        queryClient.invalidateQueries({
-          queryKey: ['tours'],
-        })
-
-        return newTour
+      // check if newTour is a string (function return error string if error)
+      if (typeof newTour === 'string' || !newTour) {
+        toast.error(errorMessage(newTour!))
+        return null
       }
 
-      // if newTour response is not successful
-      toast.error(errorMessage(newTour!))
-      return null
+      // if newTour response is an successful, create new tour
+      await createNewTour(newTour.tour)
+
+      // invalidate tours
+      queryClient.invalidateQueries({
+        queryKey: ['tours'],
+      })
+
+      // subtract tokens used for prompt
+      const updatedTokens = await subtractTokens(newTour.tokens)
+      toast.success(`${updatedTokens} tokens remaining...`)
+
+      return newTour.tour
     },
   })
 
