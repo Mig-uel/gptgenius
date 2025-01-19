@@ -6,12 +6,11 @@ import {
   subtractTokens,
 } from '@/utils/actions'
 import type { Query } from '@/utils/types'
+import { useAuth } from '@clerk/nextjs'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import Spinner from './Spinner'
-import { errorMessage } from '@/utils/helpers'
-import { useAuth } from '@clerk/nextjs'
 
 export default function Chat() {
   const { userId } = useAuth()
@@ -44,7 +43,7 @@ export default function Chat() {
         return
       }
 
-      setMessages((prev) => [...prev, response.message])
+      setMessages((prev) => [...prev, response.message as Query])
 
       const updatedTokens = await subtractTokens(response.tokens, userId!)
 
