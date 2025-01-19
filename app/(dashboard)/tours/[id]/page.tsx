@@ -23,7 +23,7 @@ export default async function Page({
       </Link>
 
       <Suspense fallback={<Spinner />}>
-        <UnsplashImage />
+        <UnsplashImage tour={tour} />
       </Suspense>
 
       <TourInfo tour={tour} />
