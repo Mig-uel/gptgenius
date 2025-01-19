@@ -2,7 +2,7 @@ import { fetchUserTokensById } from '@/utils/actions'
 import { auth, UserProfile } from '@clerk/nextjs'
 
 export default async function Page() {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   const tokens = await fetchUserTokensById(userId!)
 
