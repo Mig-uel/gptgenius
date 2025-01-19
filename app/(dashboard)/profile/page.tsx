@@ -1,8 +1,10 @@
 import { fetchUserTokensById } from '@/utils/actions'
-import { UserProfile } from '@clerk/nextjs'
+import { auth, UserProfile } from '@clerk/nextjs'
 
 export default async function Page() {
-  const tokens = await fetchUserTokensById()
+  const { userId } = auth()
+
+  const tokens = await fetchUserTokensById(userId!)
 
   return (
     <div>
