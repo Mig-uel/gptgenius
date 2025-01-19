@@ -195,7 +195,7 @@ export const generateTourImage = async ({ city, country }: Tour) => {
 }
 
 /** Get User Tokens */
-export const fetchUserTokensById = async (clerkId?: string) => {
+export const fetchUserTokensById = async () => {
   const user = auth()
 
   if (!user || !user.userId) return null
@@ -212,7 +212,7 @@ export const fetchUserTokensById = async (clerkId?: string) => {
 }
 
 /** Generate User Tokens */
-export const generateUserTokensForId = async (clerkId?: string) => {
+export const generateUserTokensForId = async () => {
   const user = auth()
 
   if (!user || !user.userId) return null
@@ -229,7 +229,7 @@ export const generateUserTokensForId = async (clerkId?: string) => {
 }
 
 /** Fetch or Generate User Tokens */
-export const fetchOrGenerateUserTokensById = async (clerkId?: string) => {
+export const fetchOrGenerateUserTokensById = async () => {
   const userTokens = await fetchUserTokensById()
 
   if (userTokens) {
@@ -240,7 +240,7 @@ export const fetchOrGenerateUserTokensById = async (clerkId?: string) => {
 }
 
 /** Subtract User Tokens */
-export const subtractTokens = async (tokens: number, clerkId?: string) => {
+export const subtractTokens = async (tokens: number) => {
   const user = auth()
 
   if (!user || !user.userId) return null
