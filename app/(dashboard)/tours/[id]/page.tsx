@@ -1,5 +1,4 @@
-import { Spinner, TourInfo } from '@/components'
-import GeneratedImage from '@/components/GeneratedImage'
+import { Spinner, TourInfo, UnsplashImage } from '@/components'
 import { getTour } from '@/utils/actions'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -24,7 +23,7 @@ export default async function Page({
       </Link>
 
       <Suspense fallback={<Spinner />}>
-        <GeneratedImage tour={tour} />
+        <UnsplashImage />
       </Suspense>
 
       <TourInfo tour={tour} />
