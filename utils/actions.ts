@@ -72,7 +72,7 @@ If you can't find info on exact ${city}, or ${city} does not exist, or it's popu
 
     const tourData = JSON.parse(response.choices[0].message.content!)
 
-    if (!tourData.tour) return null
+    if (!tourData.tour) throw new Error('Place not found...')
 
     return { tour: tourData.tour, tokens: response.usage?.total_tokens } as {
       tour: TourData
