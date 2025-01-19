@@ -10,13 +10,13 @@ import {
 } from '@/utils/actions'
 import { errorMessage } from '@/utils/helpers'
 import type { Tour } from '@/utils/types'
+import { useAuth } from '@clerk/nextjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import TourInfo from './TourInfo'
-import { auth } from '@clerk/nextjs'
 
 export default function NewTour() {
-  const { userId } = auth()
+  const { userId } = useAuth()
   const queryClient = useQueryClient()
 
   const {
@@ -44,6 +44,8 @@ export default function NewTour() {
 
       // generate new tour
       const newTour = await generateTourResponse(destination)
+
+      console.log(newTour);
 
       // check if newTour is a string (function return error string if error)
       if (typeof newTour === 'string' || !newTour) {
