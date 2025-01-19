@@ -1,9 +1,8 @@
 'use server'
-import OpenAI from 'openai'
-import type { Query, Tour, TourData } from './types'
-import prisma from './db'
-import { auth } from '@clerk/nextjs'
 import { revalidatePath } from 'next/cache'
+import OpenAI from 'openai'
+import prisma from './db'
+import type { Query, Tour, TourData } from './types'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -197,17 +196,11 @@ export const generateTourImage = async ({ city, country }: Tour) => {
   }
 }
 
-/** Get User Tokens */
-export const fetchUserTokensById = async () => {
-  const user = auth()
-
-  if (!user || !user.userId) return null
-
-  const id = user.userId
-
+/** Fetch User Tokens */
+export const fetchUserTokensById = async (clerkId: string) => {
   const result = await prisma.token.findUnique({
     where: {
-      clerkId: id,
+      clerkId,
     },
   })
 
@@ -215,16 +208,10 @@ export const fetchUserTokensById = async () => {
 }
 
 /** Generate User Tokens */
-export const generateUserTokensForId = async () => {
-  const user = auth()
-
-  if (!user || !user.userId) return null
-
-  const id = user.userId
-
+export const generateUserTokensForId = async (clerkId: string) => {
   const result = await prisma.token.create({
     data: {
-      clerkId: id,
+      clerkId,
     },
   })
 
@@ -232,27 +219,21 @@ export const generateUserTokensForId = async () => {
 }
 
 /** Fetch or Generate User Tokens */
-export const fetchOrGenerateUserTokensById = async () => {
-  const userTokens = await fetchUserTokensById()
+export const fetchOrGenerateUserTokensById = async (clerkId: string) => {
+  const userTokens = await fetchUserTokensById(clerkId)
 
   if (userTokens) {
     return userTokens
   }
 
-  return await generateUserTokensForId()
+  return await generateUserTokensForId(clerkId)
 }
 
 /** Subtract User Tokens */
-export const subtractTokens = async (tokens: number) => {
-  const user = auth()
-
-  if (!user || !user.userId) return null
-
-  const id = user.userId
-
+export const subtractTokens = async (tokens: number, clerkId: string) => {
   const result = await prisma.token.update({
     where: {
-      clerkId: id,
+      clerkId,
     },
     data: {
       tokens: {
